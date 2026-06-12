@@ -3,7 +3,6 @@ package model.service;
 import model.entity.ProductionJob;
 
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ProductionQueue {
     }
 
     public List<ProductionJob> getWaitingJobs() {
-        return Collections.unmodifiableList(List.copyOf(waiting));
+        return List.copyOf(waiting);
     }
 
     public int size() {
