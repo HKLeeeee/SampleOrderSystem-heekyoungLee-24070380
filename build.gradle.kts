@@ -29,3 +29,10 @@ tasks.test {
 tasks.named<JavaExec>("run") {
     standardInput = System.`in`
 }
+
+tasks.register<JavaExec>("dummy") {
+    group = "application"
+    description = "10개 시료 더미 데이터 생성"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("dummy.DummyDataGenerator")
+}

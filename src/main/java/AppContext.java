@@ -37,7 +37,7 @@ public class AppContext implements DashboardProvider {
         OrderView orderView = new OrderView(scanner);
         ApprovalView approvalView = new ApprovalView(scanner);
         ProductionView productionView = new ProductionView(scanner);
-        MonitoringView monitoringView = new MonitoringView();
+        MonitoringView monitoringView = new MonitoringView(scanner);
         ReleaseView releaseView = new ReleaseView(scanner);
         MainMenuView mainMenuView = new MainMenuView();
 

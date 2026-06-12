@@ -5,6 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import view.MainMenuView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainControllerTest {
@@ -23,11 +26,17 @@ class MainControllerTest {
     }
 
     @Test
-    @DisplayName("MainMenuView 메뉴 문자열에 [1]~[6], [0] 포함")
+    @DisplayName("MainMenuView 메뉴 출력에 [1]~[6], [0] 포함")
     void mainMenuView_메뉴_출력_포함_문자열() {
-        MainMenuView view = new MainMenuView();
-        String menu = view.buildMainMenuText();
-
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        PrintStream orig = System.out;
+        System.setOut(new PrintStream(buf));
+        try {
+            new MainMenuView().displayMainMenu();
+        } finally {
+            System.setOut(orig);
+        }
+        String menu = buf.toString();
         assertTrue(menu.contains("[1]"), "메뉴에 [1] 포함");
         assertTrue(menu.contains("[2]"), "메뉴에 [2] 포함");
         assertTrue(menu.contains("[3]"), "메뉴에 [3] 포함");

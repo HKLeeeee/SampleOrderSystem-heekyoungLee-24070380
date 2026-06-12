@@ -10,7 +10,9 @@ import model.service.SampleService;
 import view.ApprovalView;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ApprovalController {
 
@@ -29,7 +31,8 @@ public class ApprovalController {
 
     public void run() {
         List<Order> reserved = orderService.findByStatus(OrderStatus.RESERVED);
-        view.displayReservedList(reserved);
+        Map<String, String> sampleNames = buildSampleNameMap();
+        view.displayReservedList(reserved, sampleNames);
         if (reserved.isEmpty()) return;
 
         try {
@@ -39,7 +42,7 @@ public class ApprovalController {
 
             String action = view.selectAction();
             if ("1".equals(action)) {
-                approve(order);
+                approve(order, sampleNames);
             } else if ("2".equals(action)) {
                 approvalService.reject(order);
                 view.displayMessage("주문 거절: " + order.getOrderId() + " → [REJECTED]");
@@ -51,7 +54,7 @@ public class ApprovalController {
         }
     }
 
-    private void approve(Order order) {
+    private void approve(Order order, Map<String, String> sampleNames) {
         Optional<Sample> sampleOpt = sampleService.findAll().stream()
                 .filter(s -> s.getId().equals(order.getSampleId()))
                 .findFirst();
@@ -60,20 +63,28 @@ public class ApprovalController {
             return;
         }
         Sample sample = sampleOpt.get();
+        String sampleName = sampleNames.getOrDefault(sample.getId(), sample.getId());
 
         if (ProductionCalculator.isProductionNeeded(order.getQuantity(), sample.getStock())) {
             int shortage = ProductionCalculator.calcShortage(order.getQuantity(), sample.getStock());
             int actualQty = ProductionCalculator.calcActualQty(shortage, sample.getYield());
             double totalTime = ProductionCalculator.calcTotalTime(actualQty, sample.getAvgProductionTime());
 
-            boolean confirmed = view.confirmProductionInfo(shortage, actualQty, totalTime);
+            boolean confirmed = view.confirmProductionInfo(
+                    sampleName, sample.getStock(), shortage, actualQty, totalTime);
             if (!confirmed) {
                 approvalService.reject(order);
                 view.displayMessage("주문 거절: " + order.getOrderId() + " → [REJECTED]");
                 return;
             }
         }
+        OrderStatus before = OrderStatus.RESERVED;
         approvalService.approve(order, sample);
-        view.displayMessage("주문 승인: " + order.getOrderId() + " → [" + order.getStatus() + "]");
+        view.displayApprovalResult(order.getOrderId(), before, order.getStatus());
+    }
+
+    private Map<String, String> buildSampleNameMap() {
+        return sampleService.findAll().stream()
+                .collect(Collectors.toMap(Sample::getId, Sample::getName));
     }
 }

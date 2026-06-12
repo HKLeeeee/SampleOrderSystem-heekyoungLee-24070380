@@ -2,8 +2,6 @@ package controller;
 
 import view.MainMenuView;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -37,7 +35,13 @@ public class MainController {
 
     public void run() {
         while (true) {
-            printDashboard();
+            if (dashboard != null) {
+                mainMenuView.displayDashboard(
+                        dashboard.getSampleCount(),
+                        dashboard.getTotalStock(),
+                        dashboard.getTotalOrderCount(),
+                        dashboard.getProductionQueueSize());
+            }
             mainMenuView.displayMainMenu();
             String input = scanner.nextLine().trim();
             int choice;
@@ -58,19 +62,5 @@ public class MainController {
             Runnable handler = handlers.get(choice);
             if (handler != null) handler.run();
         }
-    }
-
-    private void printDashboard() {
-        if (dashboard == null) return;
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        System.out.println("\n========================================");
-        System.out.println("  S-Semi 시료 생산주문관리 시스템");
-        System.out.println("========================================");
-        System.out.printf("  등록 시료: %d종  |  총 재고: %dea%n",
-                dashboard.getSampleCount(), dashboard.getTotalStock());
-        System.out.printf("  전체 주문: %d건  |  생산라인 대기: %d건%n",
-                dashboard.getTotalOrderCount(), dashboard.getProductionQueueSize());
-        System.out.println("  현재 일시: " + now);
-        System.out.println("========================================");
     }
 }

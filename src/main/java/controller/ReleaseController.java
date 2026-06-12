@@ -8,8 +8,11 @@ import model.service.ReleaseService;
 import model.service.SampleService;
 import view.ReleaseView;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ReleaseController {
 
@@ -28,7 +31,8 @@ public class ReleaseController {
 
     public void run() {
         List<Order> confirmed = orderService.findByStatus(OrderStatus.CONFIRMED);
-        view.displayConfirmedList(confirmed);
+        Map<String, String> sampleNames = buildSampleNameMap();
+        view.displayConfirmedList(confirmed, sampleNames);
         if (confirmed.isEmpty()) return;
 
         try {
@@ -44,9 +48,14 @@ public class ReleaseController {
                 return;
             }
             releaseService.release(order, sampleOpt.get());
-            view.displayReleaseResult(order);
+            view.displayReleaseResult(order, LocalDateTime.now());
         } catch (Exception e) {
             view.displayMessage("[오류] " + e.getMessage());
         }
+    }
+
+    private Map<String, String> buildSampleNameMap() {
+        return sampleService.findAll().stream()
+                .collect(Collectors.toMap(Sample::getId, Sample::getName));
     }
 }

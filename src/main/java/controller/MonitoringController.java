@@ -25,10 +25,25 @@ public class MonitoringController {
     }
 
     public void run() {
-        List<Order> allOrders = getAllOrders();
+        while (true) {
+            String choice = view.readSubMenu();
+            switch (choice) {
+                case "1" -> showOrderCounts();
+                case "2" -> showStockStatus();
+                case "0" -> { return; }
+                default -> view.displayMessage("[오류] 올바른 번호를 입력하세요.");
+            }
+        }
+    }
 
+    private void showOrderCounts() {
+        List<Order> allOrders = orderService.findAll();
         view.displayOrderCounts(monitoringService.getOrderCountByStatus(allOrders));
+        showStockStatus();
+    }
 
+    private void showStockStatus() {
+        List<Order> allOrders = orderService.findAll();
         List<Sample> samples = sampleService.findAll();
         view.displayStockStatus(samples, sample -> {
             List<Order> sampleOrders = allOrders.stream()
@@ -36,9 +51,5 @@ public class MonitoringController {
                     .toList();
             return monitoringService.getStockStatus(sample, sampleOrders);
         });
-    }
-
-    private List<Order> getAllOrders() {
-        return orderService.findAll();
     }
 }

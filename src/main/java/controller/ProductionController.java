@@ -26,6 +26,7 @@ public class ProductionController {
                 ? productionService.getExpectedEndTime(current, now)
                 : null;
 
+        view.displayHeader();
         view.displayCurrentJob(current, now, expectedEnd);
         view.displayWaitingQueue(queue.getWaitingJobs(),
                 expectedEnd != null ? expectedEnd : now);
