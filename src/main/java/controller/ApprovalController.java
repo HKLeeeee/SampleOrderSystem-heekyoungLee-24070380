@@ -73,8 +73,7 @@ public class ApprovalController {
             boolean confirmed = view.confirmProductionInfo(
                     sampleName, sample.getStock(), shortage, actualQty, totalTime);
             if (!confirmed) {
-                approvalService.reject(order);
-                view.displayMessage("주문 거절: " + order.getOrderId() + " → [REJECTED]");
+                view.displayMessage("생산 승인을 취소하였습니다. 주문은 RESERVED 상태로 유지됩니다.");
                 return;
             }
         }

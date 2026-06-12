@@ -109,8 +109,8 @@ class ApprovalControllerTest {
     }
 
     @Test
-    @DisplayName("승인 — 재고 부족 시 N 입력으로 REJECTED 전환")
-    void 승인_재고부족_N_REJECTED() {
+    @DisplayName("승인 — 재고 부족 시 N 입력으로 취소 (RESERVED 유지)")
+    void 승인_재고부족_N_취소_RESERVED_유지() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 200));
@@ -120,9 +120,9 @@ class ApprovalControllerTest {
         // Act
         controller.run();
 
-        // Assert
+        // Assert: 취소 시 RESERVED 유지 (REJECTED로 바뀌면 안 됨)
         Order result = orderRepo.findById("ORD-001").get();
-        assertEquals(OrderStatus.REJECTED, result.getStatus());
+        assertEquals(OrderStatus.RESERVED, result.getStatus());
     }
 
     @Test
