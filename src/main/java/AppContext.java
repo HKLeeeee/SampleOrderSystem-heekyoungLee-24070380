@@ -57,7 +57,7 @@ public class AppContext implements DashboardProvider {
                 6, releaseCtrl::run
         );
 
-        return new MainController(mainMenuView, handlers, (DashboardProvider) this, scanner);
+        return new MainController(mainMenuView, handlers, this, scanner);
     }
 
     @Override
