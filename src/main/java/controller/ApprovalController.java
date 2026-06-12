@@ -5,7 +5,6 @@ import model.entity.OrderStatus;
 import model.entity.Sample;
 import model.service.ApprovalService;
 import model.service.OrderService;
-import model.service.ProductionCalculator;
 import model.service.SampleService;
 import view.ApprovalView;
 
@@ -64,13 +63,10 @@ public class ApprovalController {
         Sample sample = sampleOpt.get();
         String sampleName = sampleNames.getOrDefault(sample.getId(), sample.getId());
 
-        if (ProductionCalculator.isProductionNeeded(order.getQuantity(), sample.getStock())) {
-            int shortage = ProductionCalculator.calcShortage(order.getQuantity(), sample.getStock());
-            int actualQty = ProductionCalculator.calcActualQty(shortage, sample.getYield());
-            double totalTime = ProductionCalculator.calcTotalTime(actualQty, sample.getAvgProductionTime());
-
+        ApprovalService.ProductionPlan plan = approvalService.calcProductionPlan(order, sample).orElse(null);
+        if (plan != null) {
             boolean confirmed = view.confirmProductionInfo(
-                    sampleName, sample.getStock(), shortage, actualQty, totalTime);
+                    sampleName, sample.getStock(), plan.shortage(), plan.actualQty(), plan.totalTime());
             if (!confirmed) {
                 view.displayMessage("생산 승인을 취소하였습니다. 주문은 RESERVED 상태로 유지됩니다.");
                 return;

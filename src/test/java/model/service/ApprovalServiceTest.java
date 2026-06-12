@@ -94,4 +94,33 @@ class ApprovalServiceTest {
         assertThrows(IllegalStateException.class,
                 () -> approvalService.reject(order));
     }
+
+    @Test
+    @DisplayName("calcProductionPlan — 재고 부족 시 플랜 반환")
+    void calcProductionPlan_재고부족_플랜반환() {
+        Order order = reservedOrder(200);
+        Sample sample = sampleWith(30);
+        ApprovalService.ProductionPlan plan = approvalService.calcProductionPlan(order, sample).orElseThrow();
+        assertEquals(170, plan.shortage());
+        assertEquals(206, plan.actualQty());
+        assertEquals(0.8 * 206, plan.totalTime(), 0.001);
+    }
+
+    @Test
+    @DisplayName("calcProductionPlan — 재고 충분 시 빈 Optional")
+    void calcProductionPlan_재고충분_빈Optional() {
+        Order order = reservedOrder(50);
+        Sample sample = sampleWith(100);
+        assertTrue(approvalService.calcProductionPlan(order, sample).isEmpty());
+    }
+
+    @Test
+    @DisplayName("비RESERVED 상태에서 approve 시도 — IllegalStateException")
+    void PRODUCING_상태_승인_거부() {
+        Order order = reservedOrder(50);
+        order.changeStatus(OrderStatus.CONFIRMED);
+        order.changeStatus(OrderStatus.RELEASE);
+        assertThrows(IllegalStateException.class,
+                () -> approvalService.approve(order, sampleWith(100)));
+    }
 }

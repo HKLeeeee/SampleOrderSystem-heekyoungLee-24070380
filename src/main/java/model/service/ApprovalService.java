@@ -7,7 +7,25 @@ import model.entity.Sample;
 import model.repository.OrderRepository;
 import model.repository.ProductionQueueRepository;
 
+import java.util.Optional;
+
 public class ApprovalService {
+
+    public static final class ProductionPlan {
+        private final int shortage;
+        private final int actualQty;
+        private final double totalTime;
+
+        public ProductionPlan(int shortage, int actualQty, double totalTime) {
+            this.shortage = shortage;
+            this.actualQty = actualQty;
+            this.totalTime = totalTime;
+        }
+
+        public int shortage() { return shortage; }
+        public int actualQty() { return actualQty; }
+        public double totalTime() { return totalTime; }
+    }
 
     private final OrderRepository orderRepository;
     private final ProductionQueue productionQueue;
@@ -18,6 +36,16 @@ public class ApprovalService {
         this.orderRepository = orderRepository;
         this.productionQueue = productionQueue;
         this.queueRepository = queueRepository;
+    }
+
+    public Optional<ProductionPlan> calcProductionPlan(Order order, Sample sample) {
+        if (!ProductionCalculator.isProductionNeeded(order.getQuantity(), sample.getStock())) {
+            return Optional.empty();
+        }
+        int shortage = ProductionCalculator.calcShortage(order.getQuantity(), sample.getStock());
+        int actualQty = ProductionCalculator.calcActualQty(shortage, sample.getYield());
+        double totalTime = ProductionCalculator.calcTotalTime(actualQty, sample.getAvgProductionTime());
+        return Optional.of(new ProductionPlan(shortage, actualQty, totalTime));
     }
 
     public void approve(Order order, Sample sample) {
