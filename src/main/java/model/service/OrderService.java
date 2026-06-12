@@ -28,6 +28,10 @@ public class OrderService {
         return order;
     }
 
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
     public List<Order> findByStatus(OrderStatus status) {
         return orderRepository.findByStatus(status);
     }
