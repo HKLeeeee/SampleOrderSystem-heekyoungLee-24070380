@@ -23,7 +23,7 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("상태별 집계 — REJECTED 제외")
-    void 상태별_집계_REJECTED_제외() {
+    void countByStatus_excludesRejected() {
         Order r1 = new Order("O-1", "S-001", "A", 10);
         Order r2 = new Order("O-2", "S-001", "B", 10);
         Order c1 = new Order("O-3", "S-001", "C", 10);
@@ -39,14 +39,14 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("재고 0 — 고갈")
-    void 재고_고갈() {
+    void stockStatus_depleted() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 0);
         assertEquals("고갈", service.getStockStatus(s, List.of()));
     }
 
     @Test
     @DisplayName("재고 부족 — PRODUCING 주문 수요 초과")
-    void 재고_부족() {
+    void stockStatus_shortage() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 30);
         Order o = new Order("O-1", "S-001", "고객", 200);
         o.changeStatus(OrderStatus.PRODUCING);
@@ -55,7 +55,7 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("재고 여유 — CONFIRMED 주문 수요 이하")
-    void 재고_여유() {
+    void stockStatus_sufficient() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 200);
         Order o = new Order("O-1", "S-001", "고객", 50);
         o.changeStatus(OrderStatus.CONFIRMED);
@@ -64,14 +64,14 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("주문 없음 — 여유")
-    void 주문_없음_여유() {
+    void stockStatus_noOrders_isSufficient() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 100);
         assertEquals("여유", service.getStockStatus(s, List.of()));
     }
 
     @Test
     @DisplayName("재고 부족 — RESERVED 주문 수요도 포함")
-    void 재고_부족_RESERVED_포함() {
+    void stockStatus_shortage_includesReserved() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 30);
         Order o = new Order("O-1", "S-001", "고객", 200); // RESERVED 상태 (기본값)
         assertEquals("부족", service.getStockStatus(s, List.of(o)));
@@ -79,7 +79,7 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("재고 여유 — RELEASE 주문은 수요에서 제외")
-    void 재고_여유_RELEASE_제외() {
+    void stockStatus_sufficient_excludesRelease() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 200);
         Order o = new Order("O-1", "S-001", "고객", 500);
         o.changeStatus(OrderStatus.CONFIRMED);
@@ -89,7 +89,7 @@ class MonitoringServiceTest {
 
     @Test
     @DisplayName("재고 부족 — REJECTED 주문은 수요에서 제외")
-    void 재고_부족_REJECTED_제외() {
+    void stockStatus_sufficient_excludesRejected() {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 200);
         Order rejected = new Order("O-1", "S-001", "고객", 500);
         rejected.changeStatus(OrderStatus.REJECTED);

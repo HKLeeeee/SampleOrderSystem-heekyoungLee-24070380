@@ -23,7 +23,7 @@ class JsonSampleRepositoryTest {
 
     @Test
     @DisplayName("시료 저장 후 ID 조회")
-    void 시료_저장_후_조회() {
+    void save_thenFindById() {
         var repo = repo();
         Sample s = new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 100);
         repo.save(s);
@@ -34,7 +34,7 @@ class JsonSampleRepositoryTest {
 
     @Test
     @DisplayName("전체 목록 조회")
-    void 전체_목록_조회() {
+    void findAll_returnsAllSamples() {
         var repo = repo();
         repo.save(new Sample("S-001", "A", 0.8, 0.92, 0));
         repo.save(new Sample("S-002", "B", 1.0, 0.85, 50));
@@ -44,7 +44,7 @@ class JsonSampleRepositoryTest {
 
     @Test
     @DisplayName("중복 ID 저장 시 덮어쓰기")
-    void 중복_ID_덮어쓰기() {
+    void duplicateId_overwritesExisting() {
         var repo = repo();
         repo.save(new Sample("S-001", "원본", 0.8, 0.92, 10));
         repo.save(new Sample("S-001", "수정", 0.8, 0.92, 20));
@@ -54,13 +54,13 @@ class JsonSampleRepositoryTest {
 
     @Test
     @DisplayName("없는 ID 조회 — Optional.empty()")
-    void 없는_ID_조회() {
+    void findById_unknownId_returnsEmpty() {
         assertTrue(repo().findById("없음").isEmpty());
     }
 
     @Test
     @DisplayName("파일 손상 시 빈 목록으로 복구")
-    void 파일_손상_빈_목록_복구() throws IOException {
+    void corruptedFile_recoverAsEmptyList() throws IOException {
         Path file = tempDir.resolve("samples.json");
         Files.writeString(file, "invalid-json");
         var repo = new JsonSampleRepository(file.toString());

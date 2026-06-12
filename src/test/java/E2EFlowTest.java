@@ -31,7 +31,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 주문 접수 → 거절 → REJECTED 상태, 모니터링 집계 제외")
-    void 거절_시나리오() {
+    void rejectOrder_setsRejected_andExcludedFromMonitoring() {
         Order order = ctx.getOrderService().placeOrder("S-001", "고객A", 10, "20260612");
         assertEquals(OrderStatus.RESERVED, order.getStatus());
 
@@ -51,7 +51,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: FIFO 큐 — 재고 부족 주문 3개 승인 시 등록 순서대로 생산")
-    void FIFO_큐_순서_검증() {
+    void fifoQueue_processesInEnqueueOrder() {
         // 재고 10, 각 주문 50 → 모두 생산 필요
         ctx.getSampleService().register(new Sample("S-002", "GaN 에피택셜", 0.9, 0.90, 10));
 
@@ -86,7 +86,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 재고 상태 — CONFIRMED 주문 수요 반영 '부족' 판정")
-    void 재고_상태_부족_판정() {
+    void stockStatus_afterProduction() {
         // 재고 100, 주문 150 → 재고 충분하여 CONFIRMED, 이후 부족 판정
         ctx.getSampleService().register(new Sample("S-003", "테스트 시료", 1.0, 0.95, 100));
 
@@ -113,7 +113,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 재고 상태 — 재고 0일 때 '고갈' 판정")
-    void 재고_상태_고갈_판정() {
+    void stockStatus_depletedWhenStockIsZero() {
         ctx.getSampleService().register(new Sample("S-004", "고갈 시료", 0.5, 0.90, 0));
 
         Sample sample = ctx.getSampleService().findAll().stream()
@@ -125,7 +125,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 재고 상태 — 주문 없을 때 '여유' 판정")
-    void 재고_상태_여유_판정() {
+    void stockStatus_sufficientWhenNoOrders() {
         Sample sample = ctx.getSampleService().findAll().stream()
                 .filter(s -> s.getId().equals("S-001")).findFirst().orElseThrow();
 
@@ -139,7 +139,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 재고 부족 주문 생산 완료 후 연속 출고 2건")
-    void 생산_후_연속_출고() {
+    void consecutiveRelease_afterProduction() {
         // S-001 재고 100
         Order o1 = ctx.getOrderService().placeOrder("S-001", "고객A", 200, "20260612");
         Order o2 = ctx.getOrderService().placeOrder("S-001", "고객B", 50, "20260612");
@@ -171,7 +171,7 @@ class E2EFlowTest {
 
     @Test
     @DisplayName("E2E: 모니터링 — 상태별 집계 정확성 (REJECTED 제외, RESERVED/CONFIRMED/PRODUCING/RELEASE 포함)")
-    void 모니터링_상태별_집계() {
+    void monitoring_countByStatus_excludesRejected() {
         // RESERVED 1건
         Order reserved = ctx.getOrderService().placeOrder("S-001", "고객A", 5, "20260612");
 

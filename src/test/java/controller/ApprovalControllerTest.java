@@ -64,7 +64,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("빈 RESERVED 목록 — 즉시 리턴")
-    void 빈_RESERVED_목록_즉시_리턴() {
+    void emptyReservedList_returnsImmediately() {
         // Arrange
         ApprovalController controller = controllerWithInput("");
 
@@ -75,7 +75,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("승인 — 재고 충분 시 CONFIRMED 전환")
-    void 승인_재고충분_CONFIRMED() {
+    void approve_sufficientStock_setsConfirmed() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 100));
@@ -92,7 +92,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("승인 — 재고 부족 시 Y 입력으로 PRODUCING 전환")
-    void 승인_재고부족_PRODUCING() {
+    void approve_insufficientStock_setsProducing() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 200));
@@ -110,7 +110,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("승인 — 재고 부족 시 N 입력으로 취소 (RESERVED 유지)")
-    void 승인_재고부족_N_취소_RESERVED_유지() {
+    void approve_insufficientStock_cancelKeepsReserved() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 200));
@@ -127,7 +127,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("거절 — REJECTED 전환")
-    void 거절_REJECTED() {
+    void reject_setsRejected() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 100));
@@ -145,7 +145,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("잘못된 액션 입력 — 오류 메시지 출력")
-    void 잘못된_액션_오류메시지() {
+    void invalidAction_showsErrorMessage() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 100));
@@ -161,7 +161,7 @@ class ApprovalControllerTest {
 
     @Test
     @DisplayName("인덱스 범위 벗어남 — 그냥 리턴")
-    void 인덱스_범위_벗어남_리턴() {
+    void outOfRangeIndex_returnsImmediately() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         orderRepo.save(new Order("ORD-001", "S-001", "홍길동", 100));

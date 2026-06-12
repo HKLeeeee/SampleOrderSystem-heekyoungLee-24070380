@@ -47,7 +47,7 @@ class ReleaseServiceTest {
 
     @Test
     @DisplayName("출고 성공 — 재고 차감, 상태 RELEASE")
-    void 출고_성공_재고_차감() {
+    void release_success_deductsStock() {
         Sample s = sample(100);
         Order o = confirmedOrder(50);
         releaseService.release(o, s);
@@ -57,7 +57,7 @@ class ReleaseServiceTest {
 
     @Test
     @DisplayName("출고 시 재고 부족 — IllegalStateException")
-    void 출고_재고_부족_차단() {
+    void release_insufficientStock_throws() {
         Sample s = sample(100);
         Order o = confirmedOrder(200);
         assertThrows(IllegalStateException.class, () -> releaseService.release(o, s));
@@ -65,7 +65,7 @@ class ReleaseServiceTest {
 
     @Test
     @DisplayName("비CONFIRMED 주문 출고 거부 — IllegalStateException")
-    void 비CONFIRMED_출고_거부() {
+    void release_nonConfirmed_throws() {
         Sample s = sample(100);
         Order o = new Order("ORD-001", "S-001", "홍길동", 50);
         assertThrows(IllegalStateException.class, () -> releaseService.release(o, s));

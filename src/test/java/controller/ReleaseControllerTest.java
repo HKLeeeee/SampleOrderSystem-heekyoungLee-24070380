@@ -63,7 +63,7 @@ class ReleaseControllerTest {
 
     @Test
     @DisplayName("빈 CONFIRMED 목록 — 즉시 리턴")
-    void 빈_CONFIRMED_목록_즉시_리턴() {
+    void emptyConfirmedList_returnsImmediately() {
         // Arrange
         ReleaseController controller = controllerWithInput("");
 
@@ -96,7 +96,7 @@ class ReleaseControllerTest {
 
     @Test
     @DisplayName("0 입력 — 리턴")
-    void 인덱스_0_리턴() {
+    void zeroIndex_returnsImmediately() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         Order order = new Order("ORD-001", "S-001", "홍길동", 100);
@@ -115,7 +115,7 @@ class ReleaseControllerTest {
 
     @Test
     @DisplayName("범위 초과 인덱스 — 리턴")
-    void 범위초과_인덱스_리턴() {
+    void outOfRangeIndex_returnsImmediately() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         Order order = new Order("ORD-001", "S-001", "홍길동", 100);
@@ -131,7 +131,7 @@ class ReleaseControllerTest {
 
     @Test
     @DisplayName("출고 후 재고 차감 확인")
-    void 출고_후_재고_차감() {
+    void release_deductsStock() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200));
         Order order = new Order("ORD-001", "S-001", "홍길동", 100);

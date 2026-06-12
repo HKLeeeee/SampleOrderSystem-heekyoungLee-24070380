@@ -43,7 +43,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("승인 — 재고 충분 시 CONFIRMED")
-    void 승인_재고충분_CONFIRMED() {
+    void approve_sufficientStock_setsConfirmed() {
         Order order = reservedOrder(50);
         approvalService.approve(order, sampleWith(100));
         assertEquals(OrderStatus.CONFIRMED, order.getStatus());
@@ -52,7 +52,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("승인 — 재고 부족 시 PRODUCING + 큐 등록")
-    void 승인_재고부족_PRODUCING() {
+    void approve_insufficientStock_setsProducing() {
         Order order = reservedOrder(200);
         approvalService.approve(order, sampleWith(30));
         assertEquals(OrderStatus.PRODUCING, order.getStatus());
@@ -61,7 +61,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("승인 — 부족 시 큐 job 값 검증 (부족분=170, 실생산량=206)")
-    void 승인_재고부족_큐_job_검증() {
+    void approve_insufficientStock_enqueuesJob() {
         Order order = reservedOrder(200);
         approvalService.approve(order, sampleWith(30));
         ProductionJob job = queue.getCurrentJob();
@@ -71,7 +71,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("거절 — REJECTED")
-    void 거절_REJECTED() {
+    void reject_setsRejected() {
         Order order = reservedOrder(100);
         approvalService.reject(order);
         assertEquals(OrderStatus.REJECTED, order.getStatus());
@@ -79,7 +79,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("비RESERVED 주문 승인 시도 — IllegalStateException")
-    void 비RESERVED_승인_거부() {
+    void approve_nonReserved_throws() {
         Order order = reservedOrder(50);
         order.changeStatus(OrderStatus.CONFIRMED);
         assertThrows(IllegalStateException.class,
@@ -88,7 +88,7 @@ class ApprovalServiceTest {
 
     @Test
     @DisplayName("비RESERVED 주문 거절 시도 — IllegalStateException")
-    void 비RESERVED_거절_거부() {
+    void reject_nonReserved_throws() {
         Order order = reservedOrder(50);
         order.changeStatus(OrderStatus.CONFIRMED);
         assertThrows(IllegalStateException.class,

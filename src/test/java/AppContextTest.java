@@ -39,14 +39,14 @@ class AppContextTest {
 
     @Test
     @DisplayName("시료 등록 후 조회")
-    void 시료_등록_후_조회() {
+    void registerSample_thenFindAll() {
         ctx.getSampleService().register(new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 100));
         assertEquals(1, ctx.getSampleService().findAll().size());
     }
 
     @Test
     @DisplayName("주문 접수 → 승인(재고 충분) → 출고 — RELEASE, 재고 차감")
-    void 주문_접수_승인_출고_흐름() {
+    void placeOrder_approve_release_flow() {
         ctx.getSampleService().register(new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 100));
         Order order = ctx.getOrderService().placeOrder("S-001", "홍길동", 50, "20260612");
 
@@ -62,7 +62,7 @@ class AppContextTest {
 
     @Test
     @DisplayName("주문 접수 → 승인(재고 부족) → 생산완료 → 출고 — RELEASE")
-    void 생산_흐름() {
+    void placeOrder_approve_produce_release_flow() {
         ctx.getSampleService().register(new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 10));
         Order order = ctx.getOrderService().placeOrder("S-001", "홍길동", 50, "20260612");
 

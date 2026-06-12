@@ -37,7 +37,7 @@ class DummyDataGeneratorTest {
 
     @Test
     @DisplayName("더미 시료 10개 생성")
-    void 더미_시료_10개_생성() {
+    void generate_creates10Samples() {
         DummyDataGenerator gen = new DummyDataGenerator(tempDir.resolve("samples.json").toString());
         List<Sample> result = gen.generateSamples(10);
         assertEquals(10, result.size());
@@ -45,7 +45,7 @@ class DummyDataGeneratorTest {
 
     @Test
     @DisplayName("시료 ID 형식 S-NNN")
-    void 시료_ID_형식() {
+    void sampleId_hasCorrectFormat() {
         DummyDataGenerator gen = new DummyDataGenerator(tempDir.resolve("samples.json").toString());
         List<Sample> result = gen.generateSamples(3);
         assertEquals("S-001", result.get(0).getId());
@@ -55,7 +55,7 @@ class DummyDataGeneratorTest {
 
     @Test
     @DisplayName("시료 수치 유효 범위")
-    void 시료_유효값_범위() {
+    void sampleValues_withinValidRange() {
         DummyDataGenerator gen = new DummyDataGenerator(tempDir.resolve("samples.json").toString());
         List<Sample> result = gen.generateSamples(10);
         for (Sample s : result) {
@@ -119,7 +119,7 @@ class DummyDataGeneratorTest {
 
     @Test
     @DisplayName("기본 생성자 — DEFAULT_OUTPUT_PATH 사용")
-    void 기본_생성자_사용() {
+    void defaultConstructor_succeeds() {
         // Act / Assert — 예외 없이 생성자 호출 가능
         assertDoesNotThrow(() -> new DummyDataGenerator());
     }

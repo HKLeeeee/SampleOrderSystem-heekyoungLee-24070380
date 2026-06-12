@@ -22,7 +22,7 @@ class JsonOrderRepositoryTest {
 
     @Test
     @DisplayName("주문 저장 후 조회")
-    void 주문_저장_후_조회() {
+    void save_thenFindById() {
         var repo = repo();
         Order o = new Order("ORD-20260612-0001", "S-001", "홍길동", 100);
         repo.save(o);
@@ -34,7 +34,7 @@ class JsonOrderRepositoryTest {
 
     @Test
     @DisplayName("상태별 조회 — RESERVED만 반환")
-    void 상태별_조회() {
+    void findByStatus_returnsMatchingOrders() {
         var repo = repo();
         Order reserved = new Order("ORD-001", "S-001", "고객A", 10);
         Order confirmed = new Order("ORD-002", "S-001", "고객B", 20);
@@ -49,7 +49,7 @@ class JsonOrderRepositoryTest {
 
     @Test
     @DisplayName("상태 변경 후 저장 재조회")
-    void 상태_변경_후_저장_재조회() {
+    void changeStatus_saveAndReload() {
         var repo = repo();
         Order o = new Order("ORD-001", "S-001", "고객A", 10);
         repo.save(o);

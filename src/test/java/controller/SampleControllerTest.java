@@ -50,7 +50,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("시료 등록 흐름 — 유효 입력 시 시료 등록 완료")
-    void 시료_등록_흐름_정상() {
+    void registerSample_normalFlow() {
         // Arrange
         SampleController controller = controllerWithInput("1\nS-TEST\n테스트시료\n0.5\n0.9\n100\n0\n");
 
@@ -65,7 +65,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("시료 목록 — 빈 목록 표시 후 복귀")
-    void 시료_목록_빈_목록_복귀() {
+    void listSamples_emptyList_returnsImmediately() {
         // Arrange
         SampleController controller = controllerWithInput("2\n0\n");
 
@@ -77,7 +77,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("시료 검색 — 검색 결과 없음")
-    void 시료_검색_결과_없음() {
+    void searchSample_noResult() {
         // Arrange
         SampleController controller = controllerWithInput("3\nSiC\n0\n");
 
@@ -90,7 +90,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("시료 검색 — 등록된 시료 검색 성공")
-    void 시료_검색_성공() {
+    void searchSample_success() {
         // Arrange
         sampleService.register(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 100));
         SampleController controller = controllerWithInput("3\nSiC\n0\n");
@@ -104,7 +104,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("뒤로가기 — 0 입력 시 즉시 복귀")
-    void 뒤로가기_즉시_복귀() {
+    void backInput_returnsImmediately() {
         // Arrange
         SampleController controller = controllerWithInput("0\n");
 
@@ -114,7 +114,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("유효하지 않은 입력 — 오류 메시지 출력 후 계속")
-    void 유효하지_않은_입력_오류_메시지() {
+    void invalidInput_showsErrorMessage() {
         // Arrange
         SampleController controller = controllerWithInput("9\n0\n");
 
@@ -127,7 +127,7 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("중복 ID 등록 시 오류 메시지")
-    void 중복_ID_등록_오류() {
+    void duplicateId_showsError() {
         // Arrange
         sampleService.register(new Sample("S-001", "기존시료", 0.8, 0.92, 100));
         SampleController controller = controllerWithInput("1\nS-001\n중복시료\n0.5\n0.9\n50\n0\n");

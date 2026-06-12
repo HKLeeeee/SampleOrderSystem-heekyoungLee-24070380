@@ -26,19 +26,19 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("빈 큐 — 현재 작업 없음")
-    void 빈_큐_현재작업_없음() {
+    void emptyQueue_currentJobIsNull() {
         assertNull(queue.getCurrentJob());
     }
 
     @Test
     @DisplayName("빈 큐 — 대기 목록 없음")
-    void 빈_큐_대기없음() {
+    void emptyQueue_noWaitingJobs() {
         assertTrue(queue.getWaitingJobs().isEmpty());
     }
 
     @Test
     @DisplayName("첫 등록 — 즉시 현재 작업, 대기 0건")
-    void 첫_등록_즉시_현재작업() {
+    void firstEnqueue_becomesCurrentJob() {
         queue.enqueue(job1);
         assertEquals(job1, queue.getCurrentJob());
         assertTrue(queue.getWaitingJobs().isEmpty());
@@ -46,7 +46,7 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("두 번째 등록 — 현재=job1, 대기=[job2]")
-    void 두번째_등록_대기큐() {
+    void secondEnqueue_goesToWaitingQueue() {
         queue.enqueue(job1);
         queue.enqueue(job2);
         assertEquals(job1, queue.getCurrentJob());
@@ -66,7 +66,7 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("완료 후 다음 자동 진입 — 현재=job2, 대기=[]")
-    void 완료_후_다음_자동진입() {
+    void completeJob_nextJobBecomesCurrent() {
         queue.enqueue(job1);
         queue.enqueue(job2);
         queue.completeCurrentJob();
@@ -76,7 +76,7 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("완료 후 큐 비면 현재=null")
-    void 완료_후_큐_비면_현재_null() {
+    void completeJob_emptyQueue_currentBecomesNull() {
         queue.enqueue(job1);
         queue.completeCurrentJob();
         assertNull(queue.getCurrentJob());
@@ -85,7 +85,7 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("size() — 현재 + 대기 포함 전체 수")
-    void 총_대기수_포함_현재() {
+    void size_includesCurrentAndWaiting() {
         queue.enqueue(job1);
         queue.enqueue(job2);
         queue.enqueue(job3);
@@ -94,7 +94,7 @@ class ProductionQueueTest {
 
     @Test
     @DisplayName("getWaitingJobs() — 반환 리스트 수정이 원본에 영향 없음")
-    void 대기_목록_불변_반환() {
+    void waitingJobs_returnsImmutableList() {
         queue.enqueue(job1);
         queue.enqueue(job2);
         List<ProductionJob> waiting = queue.getWaitingJobs();

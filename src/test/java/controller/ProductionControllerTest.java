@@ -61,7 +61,7 @@ class ProductionControllerTest {
 
     @Test
     @DisplayName("큐 비어있음 — 완료 묻지 않고 IDLE 표시")
-    void 큐_비어있음_IDLE_표시() {
+    void emptyQueue_showsIdle() {
         // Arrange
         ProductionController controller = controllerWithInput("");
 
@@ -76,7 +76,7 @@ class ProductionControllerTest {
 
     @Test
     @DisplayName("생산 중 — Y 입력으로 completeCurrentProduction 실행")
-    void 생산중_Y_입력_생산완료() {
+    void productionInProgress_yInput_completesProduction() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         Order order = new Order("ORD-001", "S-001", "홍길동", 200);
@@ -97,7 +97,7 @@ class ProductionControllerTest {
 
     @Test
     @DisplayName("생산 중 — N 입력으로 생산 완료 취소")
-    void 생산중_N_입력_취소() {
+    void productionInProgress_nInput_cancels() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         Order order = new Order("ORD-001", "S-001", "홍길동", 200);
@@ -117,7 +117,7 @@ class ProductionControllerTest {
 
     @Test
     @DisplayName("대기 큐 있을 때 — 목록 출력")
-    void 대기_큐_있을때_목록_출력() {
+    void waitingQueue_displaysJobList() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 30));
         Order o1 = new Order("ORD-001", "S-001", "고객A", 100);

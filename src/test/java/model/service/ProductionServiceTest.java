@@ -53,7 +53,7 @@ class ProductionServiceTest {
 
     @Test
     @DisplayName("생산 완료 — 재고 실생산량만큼 증가")
-    void 생산완료_재고_증가() {
+    void completeProduction_increasesStock() {
         Sample s = sample(30);
         Order o = producingOrder();
         queue.enqueue(job(206));
@@ -63,7 +63,7 @@ class ProductionServiceTest {
 
     @Test
     @DisplayName("생산 완료 — 주문 CONFIRMED")
-    void 생산완료_주문_CONFIRMED() {
+    void completeProduction_setsOrderConfirmed() {
         sample(30);
         Order o = producingOrder();
         queue.enqueue(job(206));
@@ -73,7 +73,7 @@ class ProductionServiceTest {
 
     @Test
     @DisplayName("생산 완료 — 큐에 다음 job 자동 진입")
-    void 생산완료_큐_다음진입() {
+    void completeProduction_advancesQueue() {
         sample(30);
         producingOrder();
 
@@ -89,7 +89,7 @@ class ProductionServiceTest {
 
     @Test
     @DisplayName("생산 완료 — 큐 비면 IDLE")
-    void 생산완료_큐_비면_IDLE() {
+    void completeProduction_emptyQueue_becomesIdle() {
         sample(30);
         producingOrder();
         queue.enqueue(job(206));
@@ -99,7 +99,7 @@ class ProductionServiceTest {
 
     @Test
     @DisplayName("예상 완료 시각 계산 — startTime + totalTime(분)")
-    void 예상완료시각_계산() {
+    void calcExpectedEndTime() {
         LocalDateTime start = LocalDateTime.of(2026, 6, 12, 9, 0);
         ProductionJob j = new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8);
         LocalDateTime expected = productionService.getExpectedEndTime(j, start);

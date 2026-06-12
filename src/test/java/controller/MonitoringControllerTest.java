@@ -61,7 +61,7 @@ class MonitoringControllerTest {
 
     @Test
     @DisplayName("1 입력 후 0 — 주문량 확인 후 복귀")
-    void 주문량_확인_후_복귀() {
+    void checkOrderCount_thenReturn() {
         // Arrange
         MonitoringController controller = controllerWithInput("1\n0\n");
 
@@ -76,7 +76,7 @@ class MonitoringControllerTest {
 
     @Test
     @DisplayName("2 입력 후 0 — 재고량 확인 후 복귀")
-    void 재고량_확인_후_복귀() {
+    void checkStockStatus_thenReturn() {
         // Arrange
         sampleRepo.save(new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 100));
         MonitoringController controller = controllerWithInput("2\n0\n");
@@ -92,7 +92,7 @@ class MonitoringControllerTest {
 
     @Test
     @DisplayName("0 입력 — 즉시 복귀")
-    void 즉시_복귀() {
+    void zeroInput_returnsImmediately() {
         // Arrange
         MonitoringController controller = controllerWithInput("0\n");
 
@@ -102,7 +102,7 @@ class MonitoringControllerTest {
 
     @Test
     @DisplayName("잘못된 입력 후 0 — 오류 메시지 출력 후 복귀")
-    void 잘못된_입력_오류_후_복귀() {
+    void invalidInput_showsError_thenReturn() {
         // Arrange
         MonitoringController controller = controllerWithInput("9\n0\n");
 
@@ -115,7 +115,7 @@ class MonitoringControllerTest {
 
     @Test
     @DisplayName("주문량 확인 — 재고 현황을 자동으로 표시하지 않음")
-    void 주문량_확인_재고현황_미표시() {
+    void checkOrderCount_doesNotShowStockStatus() {
         // Arrange: [1] 선택 시 주문량만 표시, 재고 현황은 [2]에서만 표시
         MonitoringController controller = controllerWithInput("1\n0\n");
 

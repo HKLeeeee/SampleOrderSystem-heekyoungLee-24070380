@@ -21,7 +21,7 @@ class JsonProductionQueueRepositoryTest {
 
     @Test
     @DisplayName("큐 저장 후 로드 — 순서 유지")
-    void 큐_저장_후_로드_순서_유지() {
+    void saveAndLoad_maintainsOrder() {
         var repo = repo();
         List<ProductionJob> jobs = List.of(
                 new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8),
@@ -38,7 +38,7 @@ class JsonProductionQueueRepositoryTest {
 
     @Test
     @DisplayName("빈 큐 저장 후 로드 — 빈 리스트")
-    void 빈_큐_저장_로드() {
+    void emptyQueue_saveAndLoad() {
         var repo = repo();
         repo.save(List.of());
         assertTrue(repo.load().isEmpty());

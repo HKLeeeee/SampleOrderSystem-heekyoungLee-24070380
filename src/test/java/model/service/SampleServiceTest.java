@@ -30,7 +30,7 @@ class SampleServiceTest {
 
     @Test
     @DisplayName("시료 등록 성공")
-    void 시료_등록_성공() {
+    void register_success() {
         Sample s = new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 0);
         service.register(s);
         assertEquals(1, service.findAll().size());
@@ -38,7 +38,7 @@ class SampleServiceTest {
 
     @Test
     @DisplayName("중복 ID 등록 거부")
-    void 중복_ID_등록_거부() {
+    void register_duplicateId_throws() {
         service.register(new Sample("S-001", "웨이퍼A", 0.8, 0.92, 0));
         assertThrows(IllegalArgumentException.class,
                 () -> service.register(new Sample("S-001", "웨이퍼B", 0.8, 0.92, 0)));
@@ -46,7 +46,7 @@ class SampleServiceTest {
 
     @Test
     @DisplayName("전체 조회 — 3개 반환")
-    void 전체_조회() {
+    void findAll_returnsAll() {
         service.register(new Sample("S-001", "A", 0.8, 0.92, 0));
         service.register(new Sample("S-002", "B", 0.8, 0.92, 0));
         service.register(new Sample("S-003", "C", 0.8, 0.92, 0));
@@ -55,7 +55,7 @@ class SampleServiceTest {
 
     @Test
     @DisplayName("이름 부분일치 검색")
-    void 이름_부분일치_검색() {
+    void searchByName_partialMatch() {
         service.register(new Sample("S-001", "SiC 웨이퍼 6인치", 0.8, 0.92, 0));
         service.register(new Sample("S-002", "GaN 파워기판", 0.8, 0.92, 0));
         service.register(new Sample("S-003", "SiC 웨이퍼 8인치", 0.8, 0.92, 0));
@@ -78,14 +78,14 @@ class SampleServiceTest {
 
     @Test
     @DisplayName("검색 결과 없음 — 빈 리스트")
-    void 검색_결과_없음() {
+    void search_noResult() {
         service.register(new Sample("S-001", "A", 0.8, 0.92, 0));
         assertTrue(service.search("없는키워드").isEmpty());
     }
 
     @Test
     @DisplayName("등록 없이 전체 조회 — 빈 리스트")
-    void 등록_없음_전체조회() {
+    void findAll_empty() {
         assertTrue(service.findAll().isEmpty());
     }
 

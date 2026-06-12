@@ -39,7 +39,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("주문 접수 성공 — RESERVED 상태, 주문번호 형식")
-    void 주문_접수_성공() {
+    void placeOrder_success() {
         Order order = orderService.placeOrder("S-001", "홍길동", 50, "20260612");
         assertNotNull(order);
         assertEquals(OrderStatus.RESERVED, order.getStatus());
@@ -48,14 +48,14 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("미등록 시료 주문 거부")
-    void 미등록_시료_주문_거부() {
+    void placeOrder_unknownSample_throws() {
         assertThrows(IllegalArgumentException.class,
                 () -> orderService.placeOrder("S-999", "홍길동", 50, "20260612"));
     }
 
     @Test
     @DisplayName("같은 날 3회 접수 — 주문번호 중복 없음")
-    void 주문번호_중복_없음() {
+    void orderId_isUnique() {
         Set<String> ids = new HashSet<>();
         ids.add(orderService.placeOrder("S-001", "고객A", 10, "20260612").getOrderId());
         ids.add(orderService.placeOrder("S-001", "고객B", 20, "20260612").getOrderId());
@@ -65,7 +65,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("접수된 주문 RESERVED 목록 조회")
-    void 접수된_주문_RESERVED_목록_조회() {
+    void findByStatus_reserved_returnsPlacedOrders() {
         orderService.placeOrder("S-001", "고객A", 10, "20260612");
         orderService.placeOrder("S-001", "고객B", 20, "20260612");
         orderService.placeOrder("S-001", "고객C", 30, "20260612");
