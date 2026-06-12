@@ -34,4 +34,11 @@ public class ProductionQueue {
     public int size() {
         return (current == null ? 0 : 1) + waiting.size();
     }
+
+    public List<ProductionJob> snapshot() {
+        List<ProductionJob> list = new java.util.ArrayList<>();
+        if (current != null) list.add(current);
+        list.addAll(waiting);
+        return list;
+    }
 }

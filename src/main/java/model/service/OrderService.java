@@ -16,6 +16,7 @@ public class OrderService {
     public OrderService(SampleRepository sampleRepository, OrderRepository orderRepository) {
         this.sampleRepository = sampleRepository;
         this.orderRepository = orderRepository;
+        idGenerator.initFrom(orderRepository.findAll());
     }
 
     public Order placeOrder(String sampleId, String customerName, int quantity, String date) {
