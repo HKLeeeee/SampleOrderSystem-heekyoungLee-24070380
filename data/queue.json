@@ -1,0 +1,16 @@
+[
+  {
+    "orderId": "ORD-20260612-0003",
+    "sampleId": "S-003",
+    "shortage": 80,
+    "actualQty": 93,
+    "avgProductionTime": 0.5
+  },
+  {
+    "orderId": "ORD-20260612-0004",
+    "sampleId": "S-005",
+    "shortage": 20,
+    "actualQty": 29,
+    "avgProductionTime": 2.0
+  }
+]
