@@ -1,5 +1,47 @@
 [
   {
+    "orderId": "ORD-20260612-0002",
+    "sampleId": "S-002",
+    "customerName": "SK하이닉스",
+    "quantity": 50,
+    "status": "RELEASE"
+  },
+  {
+    "orderId": "ORD-20260612-0003",
+    "sampleId": "S-003",
+    "customerName": "인텔코리아",
+    "quantity": 80,
+    "status": "RELEASE"
+  },
+  {
+    "orderId": "ORD-20260612-0006",
+    "sampleId": "S-004",
+    "customerName": "삼성전기",
+    "quantity": 150,
+    "status": "CONFIRMED"
+  },
+  {
+    "orderId": "ORD-20260612-0004",
+    "sampleId": "S-005",
+    "customerName": "LG이노텍",
+    "quantity": 50,
+    "status": "RELEASE"
+  },
+  {
+    "orderId": "ORD-20260612-0005",
+    "sampleId": "S-001",
+    "customerName": "현대모비스",
+    "quantity": 200,
+    "status": "CONFIRMED"
+  },
+  {
+    "orderId": "ORD-20260612-0008",
+    "sampleId": "0",
+    "customerName": "hklee",
+    "quantity": 100,
+    "status": "RELEASE"
+  },
+  {
     "orderId": "ORD-20260612-0001",
     "sampleId": "S-001",
     "customerName": "삼성전자",
@@ -7,38 +49,31 @@
     "status": "RELEASE"
   },
   {
-    "orderId": "ORD-20260612-0002",
-    "sampleId": "S-002",
-    "customerName": "SK하이닉스",
-    "quantity": 50,
-    "status": "CONFIRMED"
+    "orderId": "ORD-20260612-0009",
+    "sampleId": "S-009",
+    "customerName": "엔비디아",
+    "quantity": 1000,
+    "status": "REJECTED"
   },
   {
-    "orderId": "ORD-20260612-0003",
+    "orderId": "ORD-20260612-0010",
+    "sampleId": "S-009",
+    "customerName": "nvidia",
+    "quantity": 100,
+    "status": "PRODUCING"
+  },
+  {
+    "orderId": "ORD-20260612-0007",
     "sampleId": "S-003",
-    "customerName": "인텔코리아",
-    "quantity": 80,
-    "status": "PRODUCING"
+    "customerName": "삼성전자 파운드리",
+    "quantity": 100,
+    "status": "RELEASE"
   },
   {
-    "orderId": "ORD-20260612-0004",
-    "sampleId": "S-005",
-    "customerName": "LG이노텍",
-    "quantity": 50,
-    "status": "PRODUCING"
-  },
-  {
-    "orderId": "ORD-20260612-0005",
-    "sampleId": "S-001",
-    "customerName": "현대모비스",
-    "quantity": 200,
-    "status": "RESERVED"
-  },
-  {
-    "orderId": "ORD-20260612-0006",
-    "sampleId": "S-004",
-    "customerName": "삼성전기",
-    "quantity": 150,
+    "orderId": "ORD-20260612-0011",
+    "sampleId": "S-003",
+    "customerName": "dbhitec",
+    "quantity": 345,
     "status": "RESERVED"
   }
 ]

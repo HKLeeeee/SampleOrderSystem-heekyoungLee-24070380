@@ -1,37 +1,72 @@
 [
   {
     "id": "S-001",
-    "name": "SiC 파워기판-6인치",
-    "avgProductionTime": 0.8,
-    "yield": 0.92,
-    "stock": 150
-  },
-  {
-    "id": "S-002",
-    "name": "GaN-on-Si 에피웨이퍼-4인치",
-    "avgProductionTime": 1.2,
-    "yield": 0.85,
-    "stock": 60
-  },
-  {
-    "id": "S-003",
-    "name": "Si IGBT 테스트 칩-8인치",
-    "avgProductionTime": 0.5,
-    "yield": 0.96,
+    "name": "실리콘 웨이퍼-8인치",
+    "avgProductionTime": 0.78,
+    "yield": 0.9,
     "stock": 0
   },
   {
+    "id": "S-002",
+    "name": "GaN 에피택셜-4인치",
+    "avgProductionTime": 0.95,
+    "yield": 0.91,
+    "stock": 349
+  },
+  {
+    "id": "S-003",
+    "name": "SiC 파워기판-6인치",
+    "avgProductionTime": 0.56,
+    "yield": 0.81,
+    "stock": 368
+  },
+  {
     "id": "S-004",
-    "name": "SiC 쇼트키 다이오드-6인치",
-    "avgProductionTime": 0.6,
-    "yield": 0.90,
-    "stock": 200
+    "name": "포토레지스트-PR7",
+    "avgProductionTime": 0.81,
+    "yield": 0.99,
+    "stock": 429
   },
   {
     "id": "S-005",
-    "name": "GaAs RF 증폭기 다이-3인치",
-    "avgProductionTime": 2.0,
-    "yield": 0.78,
-    "stock": 30
+    "name": "산화막 웨이퍼-SiO2",
+    "avgProductionTime": 0.55,
+    "yield": 0.97,
+    "stock": 88
+  },
+  {
+    "id": "S-006",
+    "name": "실리콘 웨이퍼-12인치",
+    "avgProductionTime": 0.32,
+    "yield": 0.8,
+    "stock": 416
+  },
+  {
+    "id": "S-007",
+    "name": "InP 기판-3인치",
+    "avgProductionTime": 0.49,
+    "yield": 0.75,
+    "stock": 219
+  },
+  {
+    "id": "S-008",
+    "name": "GaAs 에피택셜-6인치",
+    "avgProductionTime": 0.71,
+    "yield": 0.72,
+    "stock": 49
+  },
+  {
+    "id": "S-009",
+    "name": "질화규소막-Si3N4",
+    "avgProductionTime": 0.84,
+    "yield": 0.79,
+    "stock": 0
+  },
+  {
+    "id": "S-010",
+    "name": "SOI 웨이퍼-8인치",
+    "avgProductionTime": 0.85,
+    "yield": 0.82,
+    "stock": 382
   }
 ]
