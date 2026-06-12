@@ -3,54 +3,14 @@ package model.repository;
 import com.google.gson.reflect.TypeToken;
 import model.entity.Sample;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-public class JsonSampleRepository implements SampleRepository {
-
-    private static final Type LIST_TYPE = new TypeToken<List<Sample>>() {}.getType();
-
-    private final Path filePath;
+public class JsonSampleRepository extends AbstractJsonRepository implements SampleRepository {
 
     public JsonSampleRepository(String filePath) {
-        this.filePath = Paths.get(filePath);
-        ensureFileExists();
-    }
-
-    private void ensureFileExists() {
-        try {
-            if (filePath.getParent() != null) Files.createDirectories(filePath.getParent());
-            if (!Files.exists(filePath)) Files.writeString(filePath, "[]", StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new UncheckedIOException("저장소 파일 초기화 실패: " + filePath, e);
-        }
-    }
-
-    private List<Sample> loadAll() {
-        try {
-            String json = Files.readString(filePath, StandardCharsets.UTF_8).trim();
-            if (json.isEmpty()) return new ArrayList<>();
-            List<Sample> list = GsonConfig.INSTANCE.fromJson(json, LIST_TYPE);
-            return list != null ? new ArrayList<>(list) : new ArrayList<>();
-        } catch (IOException e) {
-            throw new UncheckedIOException("파일 읽기 실패: " + filePath, e);
-        } catch (Exception e) {
-            System.err.println("[경고] samples.json 파싱 오류 — 빈 목록으로 초기화. 원인: " + e.getMessage());
-            return new ArrayList<>();
-        }
-    }
-
-    private void persistAll(List<Sample> samples) {
-        try {
-            Files.writeString(filePath, GsonConfig.INSTANCE.toJson(samples), StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
-            throw new UncheckedIOException("파일 쓰기 실패: " + filePath, e);
-        }
+        super(filePath, new TypeToken<List<Sample>>() {}.getType(), "samples.json");
     }
 
     @Override
@@ -68,7 +28,7 @@ public class JsonSampleRepository implements SampleRepository {
     @Override
     public Optional<Sample> findById(String id) {
         Objects.requireNonNull(id);
-        return loadAll().stream().filter(s -> s.getId().equals(id)).findFirst();
+        return this.<Sample>loadAll().stream().filter(s -> s.getId().equals(id)).findFirst();
     }
 
     @Override
