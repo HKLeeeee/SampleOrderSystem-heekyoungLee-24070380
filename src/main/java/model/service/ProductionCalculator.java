@@ -2,7 +2,7 @@ package model.service;
 
 public class ProductionCalculator {
 
-    static final double CORRECTION_FACTOR = 0.9;
+    public static final double CORRECTION_FACTOR = 0.9;
 
     private ProductionCalculator() {}
 
