@@ -135,14 +135,25 @@ src/
 
 ---
 
-## 테스트 대상
+## 테스트 현황
 
-핵심 도메인 로직에 대한 단위 테스트 필수:
+JUnit 5 기반 단위 테스트 30개 파일, 전 계층(Model / Controller / View) 커버.
 
-- 주문 상태 전이 (허용/비허용 경계)
-- 실생산량 계산 공식 (수율·보정계수·ceil)
+| 계층 | 테스트 파일 |
+|---|---|
+| Model – Entity | `OrderStatusTest`, `OrderTest`, `SampleTest` |
+| Model – Repository | `JsonOrderRepositoryTest`, `JsonSampleRepositoryTest`, `JsonProductionQueueRepositoryTest` 등 |
+| Model – Service | `ApprovalServiceTest`, `ProductionCalculatorTest`, `ProductionQueueTest`, `OrderIdGeneratorTest`, `ReleaseServiceTest`, `SampleServiceTest` 등 |
+| Controller | `ApprovalControllerTest`, `MainControllerTest`, `MonitoringControllerTest`, `ProductionControllerTest`, `ReleaseControllerTest`, `SampleControllerTest` |
+| View | `ApprovalViewTest`, `MonitoringViewTest`, `ProductionViewTest`, `ReleaseViewTest`, `SampleViewTest` |
+| 기타 | `DummyDataGeneratorTest`, `AppContextTest` |
+
+주요 검증 항목:
+- 주문 상태 전이 (허용/비허용 경계, 불법 전이 예외)
+- 실생산량 계산 공식 (수율·보정계수 0.9·ceil, 경계값)
 - 생산 큐 FIFO 순서
 - 출고 시 재고 차감
+- OrderIdGenerator 재시작 후 순번 연속성
 
 ---
 
