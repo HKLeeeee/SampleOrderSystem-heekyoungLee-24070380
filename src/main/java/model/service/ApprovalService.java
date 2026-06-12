@@ -55,7 +55,7 @@ public class ApprovalService {
         if (ProductionCalculator.isProductionNeeded(order.getQuantity(), sample.getStock())) {
             int shortage = ProductionCalculator.calcShortage(order.getQuantity(), sample.getStock());
             int actualQty = ProductionCalculator.calcActualQty(shortage, sample.getYield());
-            ProductionJob job = new ProductionJob(order.getOrderId(), sample.getId(), shortage, actualQty, sample.getAvgProductionTime());
+            ProductionJob job = new ProductionJob(order.getOrderId(), sample.getId(), order.getQuantity(), shortage, actualQty, sample.getAvgProductionTime());
             order.changeStatus(OrderStatus.PRODUCING);
             productionQueue.enqueue(job);
             queueRepository.save(productionQueue.snapshot());

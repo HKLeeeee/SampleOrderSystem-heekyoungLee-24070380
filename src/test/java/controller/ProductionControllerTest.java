@@ -82,7 +82,7 @@ class ProductionControllerTest {
         Order order = new Order("ORD-001", "S-001", "홍길동", 200);
         order.changeStatus(OrderStatus.PRODUCING);
         orderRepo.save(order);
-        queue.enqueue(new ProductionJob("ORD-001", "S-001", 170, 206, 0.8));
+        queue.enqueue(new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8));
 
         ProductionController controller = controllerWithInput("Y\n");
 
@@ -103,7 +103,7 @@ class ProductionControllerTest {
         Order order = new Order("ORD-001", "S-001", "홍길동", 200);
         order.changeStatus(OrderStatus.PRODUCING);
         orderRepo.save(order);
-        queue.enqueue(new ProductionJob("ORD-001", "S-001", 170, 206, 0.8));
+        queue.enqueue(new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8));
 
         ProductionController controller = controllerWithInput("N\n");
 
@@ -127,8 +127,8 @@ class ProductionControllerTest {
         o2.changeStatus(OrderStatus.PRODUCING);
         orderRepo.save(o2);
 
-        queue.enqueue(new ProductionJob("ORD-001", "S-001", 70, 85, 0.8));
-        queue.enqueue(new ProductionJob("ORD-002", "S-001", 50, 61, 0.8));
+        queue.enqueue(new ProductionJob("ORD-001", "S-001", 100, 70, 85, 0.8));
+        queue.enqueue(new ProductionJob("ORD-002", "S-001", 80, 50, 61, 0.8));
 
         ProductionController controller = controllerWithInput("N\n");
 

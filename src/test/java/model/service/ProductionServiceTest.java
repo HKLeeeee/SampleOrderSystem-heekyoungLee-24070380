@@ -48,7 +48,7 @@ class ProductionServiceTest {
     }
 
     private ProductionJob job(int actualQty) {
-        return new ProductionJob("ORD-001", "S-001", 170, actualQty, 0.8);
+        return new ProductionJob("ORD-001", "S-001", 200, 170, actualQty, 0.8);
     }
 
     @Test
@@ -82,7 +82,7 @@ class ProductionServiceTest {
         orderRepo.save(o2);
 
         queue.enqueue(job(206));
-        queue.enqueue(new ProductionJob("ORD-002", "S-001", 20, 25, 0.8));
+        queue.enqueue(new ProductionJob("ORD-002", "S-001", 50, 20, 25, 0.8));
         productionService.completeCurrentProduction();
         assertEquals("ORD-002", queue.getCurrentJob().getOrderId());
     }
@@ -101,7 +101,7 @@ class ProductionServiceTest {
     @DisplayName("예상 완료 시각 계산 — startTime + totalTime(분)")
     void 예상완료시각_계산() {
         LocalDateTime start = LocalDateTime.of(2026, 6, 12, 9, 0);
-        ProductionJob j = new ProductionJob("ORD-001", "S-001", 170, 206, 0.8);
+        ProductionJob j = new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8);
         LocalDateTime expected = productionService.getExpectedEndTime(j, start);
         double totalMinutes = 0.8 * 206;
         long seconds = (long) (totalMinutes * 60);

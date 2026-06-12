@@ -34,8 +34,7 @@ public class ProductionView {
         System.out.printf("│ 주문번호   %-20s  시료   %s%n",
                 job.getOrderId(), job.getSampleId());
         System.out.printf("│ 주문량     %dea    재고부족  %dea  →  실생산량  %dea%n",
-                job.getShortage() + (job.getActualQty() > 0 ? 0 : 0),
-                job.getShortage(), job.getActualQty());
+                job.getOrderQty(), job.getShortage(), job.getActualQty());
         System.out.printf("│ 상태       [생산 중]");
         if (expectedEnd != null) {
             System.out.printf("    완료 예정  %s%n", expectedEnd.format(FMT));
@@ -62,7 +61,7 @@ public class ProductionView {
             cumTime = cumTime.plusSeconds((long) (minutes * 60));
             System.out.printf("  %-5d %-22s %-12s %5dea  %5dea  %5dea    %s%n",
                     i + 1, job.getOrderId(), job.getSampleId(),
-                    job.getShortage() + job.getActualQty(),
+                    job.getOrderQty(),
                     job.getShortage(), job.getActualQty(), cumTime.format(FMT));
         }
         System.out.println();

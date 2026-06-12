@@ -8,9 +8,12 @@ public class ProductionJob {
     private final int actualQty;
     private final double avgProductionTime;
 
-    public ProductionJob(String orderId, String sampleId, int shortage, int actualQty, double avgProductionTime) {
+    private final int orderQty;
+
+    public ProductionJob(String orderId, String sampleId, int orderQty, int shortage, int actualQty, double avgProductionTime) {
         this.orderId = orderId;
         this.sampleId = sampleId;
+        this.orderQty = orderQty;
         this.shortage = shortage;
         this.actualQty = actualQty;
         this.avgProductionTime = avgProductionTime;
@@ -18,6 +21,7 @@ public class ProductionJob {
 
     public String getOrderId() { return orderId; }
     public String getSampleId() { return sampleId; }
+    public int getOrderQty() { return orderQty; }
     public int getShortage() { return shortage; }
     public int getActualQty() { return actualQty; }
     public double getAvgProductionTime() { return avgProductionTime; }

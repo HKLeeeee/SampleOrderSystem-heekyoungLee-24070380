@@ -24,9 +24,9 @@ class JsonProductionQueueRepositoryTest {
     void 큐_저장_후_로드_순서_유지() {
         var repo = repo();
         List<ProductionJob> jobs = List.of(
-                new ProductionJob("ORD-001", "S-001", 170, 206, 0.8),
-                new ProductionJob("ORD-002", "S-002", 50, 61, 1.0),
-                new ProductionJob("ORD-003", "S-003", 30, 37, 0.5)
+                new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8),
+                new ProductionJob("ORD-002", "S-002", 80, 50, 61, 1.0),
+                new ProductionJob("ORD-003", "S-003", 60, 30, 37, 0.5)
         );
         repo.save(jobs);
         List<ProductionJob> loaded = repo.load();

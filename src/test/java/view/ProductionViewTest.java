@@ -70,7 +70,7 @@ class ProductionViewTest {
     void displayCurrentJob_작업있음_정보_출력() {
         // Arrange
         ProductionView view = viewWithInput("");
-        ProductionJob job = new ProductionJob("ORD-001", "S-001", 170, 206, 0.8);
+        ProductionJob job = new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8);
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime end = now.plusMinutes(165);
 
@@ -90,7 +90,7 @@ class ProductionViewTest {
     void displayCurrentJob_expectedEnd_null_처리() {
         // Arrange
         ProductionView view = viewWithInput("");
-        ProductionJob job = new ProductionJob("ORD-001", "S-001", 50, 61, 0.8);
+        ProductionJob job = new ProductionJob("ORD-001", "S-001", 80, 50, 61, 0.8);
 
         // Act / Assert
         assertDoesNotThrow(() ->
@@ -116,8 +116,8 @@ class ProductionViewTest {
         // Arrange
         ProductionView view = viewWithInput("");
         List<ProductionJob> waiting = List.of(
-                new ProductionJob("ORD-002", "S-001", 100, 121, 0.8),
-                new ProductionJob("ORD-003", "S-002", 50, 61, 1.0)
+                new ProductionJob("ORD-002", "S-001", 130, 100, 121, 0.8),
+                new ProductionJob("ORD-003", "S-002", 80, 50, 61, 1.0)
         );
 
         // Act

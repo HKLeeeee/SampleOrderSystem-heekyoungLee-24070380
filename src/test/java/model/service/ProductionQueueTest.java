@@ -19,9 +19,9 @@ class ProductionQueueTest {
     @BeforeEach
     void setUp() {
         queue = new ProductionQueue();
-        job1 = new ProductionJob("ORD-001", "S-001", 170, 206, 0.8);
-        job2 = new ProductionJob("ORD-002", "S-002", 50, 61, 1.0);
-        job3 = new ProductionJob("ORD-003", "S-003", 30, 37, 0.5);
+        job1 = new ProductionJob("ORD-001", "S-001", 200, 170, 206, 0.8);
+        job2 = new ProductionJob("ORD-002", "S-002", 80, 50, 61, 1.0);
+        job3 = new ProductionJob("ORD-003", "S-003", 60, 30, 37, 0.5);
     }
 
     @Test
