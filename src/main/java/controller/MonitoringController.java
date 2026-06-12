@@ -7,6 +7,7 @@ import model.service.OrderService;
 import model.service.SampleService;
 import view.MonitoringView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MonitoringController {
@@ -39,17 +40,20 @@ public class MonitoringController {
     private void showOrderCounts() {
         List<Order> allOrders = orderService.findAll();
         view.displayOrderCounts(monitoringService.getOrderCountByStatus(allOrders));
-        showStockStatus();
     }
 
     private void showStockStatus() {
         List<Order> allOrders = orderService.findAll();
         List<Sample> samples = sampleService.findAll();
-        view.displayStockStatus(samples, sample -> {
+        List<MonitoringView.StockRow> rows = new ArrayList<>();
+        for (Sample sample : samples) {
             List<Order> sampleOrders = allOrders.stream()
                     .filter(o -> o.getSampleId().equals(sample.getId()))
                     .toList();
-            return monitoringService.getStockStatus(sample, sampleOrders);
-        });
+            String status = monitoringService.getStockStatus(sample, sampleOrders);
+            int ratio = monitoringService.getStockRatio(sample, sampleOrders);
+            rows.add(new MonitoringView.StockRow(sample.getName(), sample.getStock(), status, ratio));
+        }
+        view.displayStockStatus(rows);
     }
 }

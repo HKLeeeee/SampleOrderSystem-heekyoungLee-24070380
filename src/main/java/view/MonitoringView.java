@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class MonitoringView {
 
@@ -42,34 +41,27 @@ public class MonitoringView {
         System.out.printf("  [%-12s]  %d건%n", "RELEASE",   counts.getOrDefault(OrderStatus.RELEASE,   0L));
     }
 
-    public void displayStockStatus(List<Sample> samples, Function<Sample, String> statusFn) {
+    public record StockRow(String name, int stock, String status, int ratio) {}
+
+    public void displayStockStatus(List<StockRow> rows) {
         System.out.println("----------------------------------------------------------------");
         System.out.println("재고 현황");
         System.out.println();
-        if (samples.isEmpty()) {
+        if (rows.isEmpty()) {
             System.out.println("등록된 시료가 없습니다.");
             return;
         }
         System.out.printf("  %-24s  %-10s  %-6s  %s%n", "시료명", "재고", "상태", "잔여율");
         System.out.println("  " + "-".repeat(60));
-        for (Sample s : samples) {
-            String status = statusFn.apply(s);
-            int pct = calcPercent(s.getStock(), status);
-            String bar = buildBar(pct);
+        for (StockRow row : rows) {
+            String bar = buildBar(row.ratio());
             System.out.printf("  %-24s  %5dea    [%-4s]  %s %3d%%%n",
-                    s.getName(), s.getStock(), status, bar, pct);
+                    row.name(), row.stock(), row.status(), bar, row.ratio());
         }
     }
 
     public void displayMessage(String message) {
         System.out.println(message);
-    }
-
-    private int calcPercent(int stock, String status) {
-        if ("고갈".equals(status)) return 0;
-        if ("여유".equals(status)) return 100;
-        if (stock <= 0) return 0;
-        return Math.min(50, stock);
     }
 
     private String buildBar(int pct) {

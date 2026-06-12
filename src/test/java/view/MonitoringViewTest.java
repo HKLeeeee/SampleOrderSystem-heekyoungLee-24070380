@@ -1,7 +1,6 @@
 package view;
 
 import model.entity.OrderStatus;
-import model.entity.Sample;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -111,10 +110,10 @@ class MonitoringViewTest {
     void displayStockStatus_여유_상태_출력() {
         // Arrange
         MonitoringView view = viewWithInput("");
-        Sample sample = new Sample("S-001", "SiC 파워기판", 0.8, 0.92, 200);
+        MonitoringView.StockRow row = new MonitoringView.StockRow("SiC 파워기판", 200, "여유", 100);
 
         // Act
-        view.displayStockStatus(List.of(sample), s -> "여유");
+        view.displayStockStatus(List.of(row));
 
         // Assert
         String out = outBuf.toString();
@@ -125,19 +124,20 @@ class MonitoringViewTest {
     }
 
     @Test
-    @DisplayName("displayStockStatus — 부족 상태 출력")
+    @DisplayName("displayStockStatus — 부족 상태 출력 (정확한 비율)")
     void displayStockStatus_부족_상태_출력() {
         // Arrange
         MonitoringView view = viewWithInput("");
-        Sample sample = new Sample("S-001", "GaN 에피택셜", 0.5, 0.90, 30);
+        MonitoringView.StockRow row = new MonitoringView.StockRow("GaN 에피택셜", 30, "부족", 15);
 
         // Act
-        view.displayStockStatus(List.of(sample), s -> "부족");
+        view.displayStockStatus(List.of(row));
 
         // Assert
         String out = outBuf.toString();
         assertTrue(out.contains("부족"), "부족 상태 포함");
         assertTrue(out.contains("30"), "재고 포함");
+        assertTrue(out.contains("15%"), "15% 비율 포함");
     }
 
     @Test
@@ -145,10 +145,10 @@ class MonitoringViewTest {
     void displayStockStatus_고갈_상태_출력() {
         // Arrange
         MonitoringView view = viewWithInput("");
-        Sample sample = new Sample("S-001", "SOI 웨이퍼", 0.8, 0.92, 0);
+        MonitoringView.StockRow row = new MonitoringView.StockRow("SOI 웨이퍼", 0, "고갈", 0);
 
         // Act
-        view.displayStockStatus(List.of(sample), s -> "고갈");
+        view.displayStockStatus(List.of(row));
 
         // Assert
         String out = outBuf.toString();
@@ -163,7 +163,7 @@ class MonitoringViewTest {
         MonitoringView view = viewWithInput("");
 
         // Act
-        view.displayStockStatus(List.of(), s -> "여유");
+        view.displayStockStatus(List.of());
 
         // Assert
         String out = outBuf.toString();

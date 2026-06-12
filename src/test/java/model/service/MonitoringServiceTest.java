@@ -97,4 +97,36 @@ class MonitoringServiceTest {
         normal.changeStatus(OrderStatus.CONFIRMED);
         assertEquals("여유", service.getStockStatus(s, List.of(rejected, normal)));
     }
+
+    @Test
+    @DisplayName("getStockRatio — 재고 0 → 0%")
+    void getStockRatio_재고_0() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 0);
+        assertEquals(0, service.getStockRatio(s, List.of()));
+    }
+
+    @Test
+    @DisplayName("getStockRatio — 수요 없음 → 100%")
+    void getStockRatio_수요_없음() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 100);
+        assertEquals(100, service.getStockRatio(s, List.of()));
+    }
+
+    @Test
+    @DisplayName("getStockRatio — 재고 100, 수요 200 → 50%")
+    void getStockRatio_재고_100_수요_200() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 100);
+        Order o = new Order("O-1", "S-001", "고객", 200);
+        o.changeStatus(OrderStatus.CONFIRMED);
+        assertEquals(50, service.getStockRatio(s, List.of(o)));
+    }
+
+    @Test
+    @DisplayName("getStockRatio — 재고 > 수요 → 100% 상한")
+    void getStockRatio_재고_초과_100상한() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 500);
+        Order o = new Order("O-1", "S-001", "고객", 200);
+        o.changeStatus(OrderStatus.CONFIRMED);
+        assertEquals(100, service.getStockRatio(s, List.of(o)));
+    }
 }

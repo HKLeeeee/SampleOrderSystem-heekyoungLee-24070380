@@ -28,4 +28,16 @@ public class MonitoringService {
 
         return sample.getStock() >= demand ? "여유" : "부족";
     }
+
+    public int getStockRatio(Sample sample, List<Order> ordersForSample) {
+        if (sample.getStock() == 0) return 0;
+        int demand = ordersForSample.stream()
+                .filter(o -> o.getStatus() == OrderStatus.RESERVED
+                          || o.getStatus() == OrderStatus.PRODUCING
+                          || o.getStatus() == OrderStatus.CONFIRMED)
+                .mapToInt(Order::getQuantity)
+                .sum();
+        if (demand == 0) return 100;
+        return Math.min(100, (int) (sample.getStock() * 100.0 / demand));
+    }
 }

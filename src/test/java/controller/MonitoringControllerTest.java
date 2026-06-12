@@ -114,15 +114,18 @@ class MonitoringControllerTest {
     }
 
     @Test
-    @DisplayName("주문량 확인 — 시료 없을 때 빈 재고 현황 표시")
-    void 주문량_확인_시료없음() {
-        // Arrange
+    @DisplayName("주문량 확인 — 재고 현황을 자동으로 표시하지 않음")
+    void 주문량_확인_재고현황_미표시() {
+        // Arrange: [1] 선택 시 주문량만 표시, 재고 현황은 [2]에서만 표시
         MonitoringController controller = controllerWithInput("1\n0\n");
 
         // Act
         controller.run();
 
-        // Assert
-        assertTrue(outBuf.toString().contains("등록된 시료가 없습니다"), "시료 없음 메시지 포함");
+        // Assert: 주문량 현황은 표시
+        String out = outBuf.toString();
+        assertTrue(out.contains("RESERVED"), "RESERVED 포함");
+        // 재고 현황은 표시되지 않아야 함 (이전 버그: showOrderCounts가 showStockStatus 자동 호출)
+        assertFalse(out.contains("재고 현황"), "재고 현황 미표시");
     }
 }
