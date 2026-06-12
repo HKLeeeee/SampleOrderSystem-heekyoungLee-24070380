@@ -137,10 +137,12 @@ src/
 
 ## 테스트 현황
 
-JUnit 5 기반 단위 테스트 30개 파일, 전 계층(Model / Controller / View) 커버.
+JUnit 5 기반 단위 테스트 31개 파일, 전 계층(Model / Controller / View) + E2E 커버.
+테스트 메서드명 전체 영어 camelCase (`@DisplayName` 으로 한글 설명 유지).
 
 | 계층 | 테스트 파일 |
 |---|---|
+| E2E | `E2EFlowTest` |
 | Model – Entity | `OrderStatusTest`, `OrderTest`, `SampleTest` |
 | Model – Repository | `JsonOrderRepositoryTest`, `JsonSampleRepositoryTest`, `JsonProductionQueueRepositoryTest` 등 |
 | Model – Service | `ApprovalServiceTest`, `ProductionCalculatorTest`, `ProductionQueueTest`, `OrderIdGeneratorTest`, `ReleaseServiceTest`, `SampleServiceTest` 등 |
@@ -154,6 +156,7 @@ JUnit 5 기반 단위 테스트 30개 파일, 전 계층(Model / Controller / Vi
 - 생산 큐 FIFO 순서
 - 출고 시 재고 차감
 - OrderIdGenerator 재시작 후 순번 연속성
+- E2E: 거절 흐름, FIFO 순서, 재고 상태 판정, 생산→출고, 모니터링 집계
 
 ---
 
