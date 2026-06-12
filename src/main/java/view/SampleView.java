@@ -50,6 +50,10 @@ public class SampleView {
         }
     }
 
+    public String readLine() {
+        return scanner.nextLine().trim();
+    }
+
     public String inputSearchKeyword() {
         System.out.print("검색어 (이름 또는 ID): ");
         return scanner.nextLine().trim();

@@ -21,9 +21,7 @@ public class SampleController {
             view.displaySampleMenu();
             String choice;
             try {
-                choice = System.console() != null
-                        ? System.console().readLine()
-                        : new java.util.Scanner(System.in).nextLine();
+                choice = view.readLine();
             } catch (Exception e) { break; }
 
             switch (choice.trim()) {
