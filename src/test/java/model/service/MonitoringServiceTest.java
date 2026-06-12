@@ -68,4 +68,33 @@ class MonitoringServiceTest {
         Sample s = new Sample("S-001", "A", 0.8, 0.92, 100);
         assertEquals("여유", service.getStockStatus(s, List.of()));
     }
+
+    @Test
+    @DisplayName("재고 부족 — RESERVED 주문 수요도 포함")
+    void 재고_부족_RESERVED_포함() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 30);
+        Order o = new Order("O-1", "S-001", "고객", 200); // RESERVED 상태 (기본값)
+        assertEquals("부족", service.getStockStatus(s, List.of(o)));
+    }
+
+    @Test
+    @DisplayName("재고 여유 — RELEASE 주문은 수요에서 제외")
+    void 재고_여유_RELEASE_제외() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 200);
+        Order o = new Order("O-1", "S-001", "고객", 500);
+        o.changeStatus(OrderStatus.CONFIRMED);
+        o.changeStatus(OrderStatus.RELEASE);
+        assertEquals("여유", service.getStockStatus(s, List.of(o)));
+    }
+
+    @Test
+    @DisplayName("재고 부족 — REJECTED 주문은 수요에서 제외")
+    void 재고_부족_REJECTED_제외() {
+        Sample s = new Sample("S-001", "A", 0.8, 0.92, 200);
+        Order rejected = new Order("O-1", "S-001", "고객", 500);
+        rejected.changeStatus(OrderStatus.REJECTED);
+        Order normal = new Order("O-2", "S-001", "고객", 100);
+        normal.changeStatus(OrderStatus.CONFIRMED);
+        assertEquals("여유", service.getStockStatus(s, List.of(rejected, normal)));
+    }
 }

@@ -20,7 +20,9 @@ public class MonitoringService {
         if (sample.getStock() == 0) return "고갈";
 
         int demand = ordersForSample.stream()
-                .filter(o -> o.getStatus() == OrderStatus.PRODUCING || o.getStatus() == OrderStatus.CONFIRMED)
+                .filter(o -> o.getStatus() == OrderStatus.RESERVED
+                          || o.getStatus() == OrderStatus.PRODUCING
+                          || o.getStatus() == OrderStatus.CONFIRMED)
                 .mapToInt(Order::getQuantity)
                 .sum();
 
