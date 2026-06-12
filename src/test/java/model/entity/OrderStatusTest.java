@@ -69,4 +69,46 @@ class OrderStatusTest {
         assertThrows(IllegalStateException.class,
                 () -> OrderStatus.PRODUCING.transitionTo(OrderStatus.RESERVED));
     }
+
+    @Test
+    @DisplayName("RESERVED → RELEASE 직행 금지")
+    void reserved_to_release_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.RESERVED.transitionTo(OrderStatus.RELEASE));
+    }
+
+    @Test
+    @DisplayName("PRODUCING → REJECTED 금지")
+    void producing_to_rejected_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.PRODUCING.transitionTo(OrderStatus.REJECTED));
+    }
+
+    @Test
+    @DisplayName("CONFIRMED → RESERVED 금지")
+    void confirmed_to_reserved_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.CONFIRMED.transitionTo(OrderStatus.RESERVED));
+    }
+
+    @Test
+    @DisplayName("RELEASE → PRODUCING 금지")
+    void release_to_producing_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.RELEASE.transitionTo(OrderStatus.PRODUCING));
+    }
+
+    @Test
+    @DisplayName("REJECTED → RESERVED 금지 (재활성화 불가)")
+    void rejected_to_reserved_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.REJECTED.transitionTo(OrderStatus.RESERVED));
+    }
+
+    @Test
+    @DisplayName("PRODUCING → RELEASE 직행 금지")
+    void producing_to_release_금지() {
+        assertThrows(IllegalStateException.class,
+                () -> OrderStatus.PRODUCING.transitionTo(OrderStatus.RELEASE));
+    }
 }
