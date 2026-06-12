@@ -5,6 +5,7 @@ import model.entity.OrderStatus;
 import model.entity.ProductionJob;
 import model.entity.Sample;
 import model.repository.OrderRepository;
+import model.repository.ProductionQueueRepository;
 import model.repository.SampleRepository;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,14 @@ public class ProductionService {
     private final ProductionQueue queue;
     private final SampleRepository sampleRepository;
     private final OrderRepository orderRepository;
+    private final ProductionQueueRepository queueRepository;
 
-    public ProductionService(ProductionQueue queue, SampleRepository sampleRepository, OrderRepository orderRepository) {
+    public ProductionService(ProductionQueue queue, SampleRepository sampleRepository,
+                             OrderRepository orderRepository, ProductionQueueRepository queueRepository) {
         this.queue = queue;
         this.sampleRepository = sampleRepository;
         this.orderRepository = orderRepository;
+        this.queueRepository = queueRepository;
     }
 
     public void completeCurrentProduction() {
@@ -37,6 +41,7 @@ public class ProductionService {
         orderRepository.save(order);
 
         queue.completeCurrentJob();
+        queueRepository.save(queue.snapshot());
     }
 
     public LocalDateTime getExpectedEndTime(ProductionJob job, LocalDateTime startTime) {

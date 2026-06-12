@@ -26,8 +26,8 @@ public class AppContext implements DashboardProvider {
 
         this.sampleService = new SampleService(sampleRepo);
         this.orderService = new OrderService(sampleRepo, orderRepo);
-        this.approvalService = new ApprovalService(orderRepo, productionQueue);
-        this.productionService = new ProductionService(productionQueue, sampleRepo, orderRepo);
+        this.approvalService = new ApprovalService(orderRepo, productionQueue, queueRepo);
+        this.productionService = new ProductionService(productionQueue, sampleRepo, orderRepo, queueRepo);
         this.monitoringService = new MonitoringService();
         this.releaseService = new ReleaseService(sampleRepo, orderRepo);
     }

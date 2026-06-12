@@ -5,15 +5,19 @@ import model.entity.OrderStatus;
 import model.entity.ProductionJob;
 import model.entity.Sample;
 import model.repository.OrderRepository;
+import model.repository.ProductionQueueRepository;
 
 public class ApprovalService {
 
     private final OrderRepository orderRepository;
     private final ProductionQueue productionQueue;
+    private final ProductionQueueRepository queueRepository;
 
-    public ApprovalService(OrderRepository orderRepository, ProductionQueue productionQueue) {
+    public ApprovalService(OrderRepository orderRepository, ProductionQueue productionQueue,
+                           ProductionQueueRepository queueRepository) {
         this.orderRepository = orderRepository;
         this.productionQueue = productionQueue;
+        this.queueRepository = queueRepository;
     }
 
     public void approve(Order order, Sample sample) {
@@ -26,6 +30,7 @@ public class ApprovalService {
             ProductionJob job = new ProductionJob(order.getOrderId(), sample.getId(), shortage, actualQty, sample.getAvgProductionTime());
             order.changeStatus(OrderStatus.PRODUCING);
             productionQueue.enqueue(job);
+            queueRepository.save(productionQueue.snapshot());
         } else {
             order.changeStatus(OrderStatus.CONFIRMED);
         }

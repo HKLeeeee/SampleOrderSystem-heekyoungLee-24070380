@@ -4,10 +4,7 @@ import model.entity.Order;
 import model.entity.OrderStatus;
 import model.entity.ProductionJob;
 import model.entity.Sample;
-import model.repository.JsonOrderRepository;
-import model.repository.JsonSampleRepository;
-import model.repository.OrderRepository;
-import model.repository.SampleRepository;
+import model.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,8 +29,9 @@ class ProductionServiceTest {
     void setUp() {
         sampleRepo = new JsonSampleRepository(tempDir.resolve("samples.json").toString());
         orderRepo = new JsonOrderRepository(tempDir.resolve("orders.json").toString());
+        ProductionQueueRepository queueRepo = new JsonProductionQueueRepository(tempDir.resolve("queue.json").toString());
         queue = new ProductionQueue();
-        productionService = new ProductionService(queue, sampleRepo, orderRepo);
+        productionService = new ProductionService(queue, sampleRepo, orderRepo, queueRepo);
     }
 
     private Sample sample(int stock) {
