@@ -36,7 +36,8 @@ public class SampleController {
 
     private void register() {
         try {
-            Sample s = view.inputNewSample();
+            SampleView.SampleInput input = view.inputNewSample();
+            Sample s = new Sample(input.id(), input.name(), input.avgProductionTime(), input.yield(), input.stock());
             service.register(s);
             view.displayMessage("시료 등록 완료: " + s.getId() + " - " + s.getName());
         } catch (Exception e) {

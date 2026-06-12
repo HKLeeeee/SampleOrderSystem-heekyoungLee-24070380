@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class SampleView {
 
+    public record SampleInput(String id, String name, double avgProductionTime, double yield, int stock) {}
+
     private static final int PAGE_SIZE = 5;
 
     private final Scanner scanner;
@@ -22,7 +24,7 @@ public class SampleView {
         System.out.print("[1] 시료 등록   [2] 시료 목록   [3] 시료 검색   [0] 뒤로\n선택 > ");
     }
 
-    public Sample inputNewSample() {
+    public SampleInput inputNewSample() {
         System.out.println("\n--- 시료 등록 ---");
         System.out.print("시료 ID: ");
         String id = scanner.nextLine().trim();
@@ -34,7 +36,7 @@ public class SampleView {
         double yield = Double.parseDouble(scanner.nextLine().trim());
         System.out.print("초기 재고 (ea): ");
         int stock = Integer.parseInt(scanner.nextLine().trim());
-        return new Sample(id, name, avgTime, yield, stock);
+        return new SampleInput(id, name, avgTime, yield, stock);
     }
 
     public void displaySampleList(List<Sample> samples) {

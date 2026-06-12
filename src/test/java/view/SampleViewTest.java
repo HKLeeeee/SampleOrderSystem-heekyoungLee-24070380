@@ -123,20 +123,20 @@ class SampleViewTest {
     }
 
     @Test
-    @DisplayName("inputNewSample — Scanner 입력으로 Sample 생성")
-    void inputNewSample_Sample_생성() {
+    @DisplayName("inputNewSample — Scanner 입력으로 SampleInput 반환")
+    void inputNewSample_SampleInput_반환() {
         // Arrange
         SampleView view = viewWithInput("S-TEST\n테스트시료\n0.5\n0.9\n100\n");
 
         // Act
-        Sample s = view.inputNewSample();
+        SampleView.SampleInput input = view.inputNewSample();
 
         // Assert
-        assertEquals("S-TEST", s.getId());
-        assertEquals("테스트시료", s.getName());
-        assertEquals(0.5, s.getAvgProductionTime());
-        assertEquals(0.9, s.getYield());
-        assertEquals(100, s.getStock());
+        assertEquals("S-TEST", input.id());
+        assertEquals("테스트시료", input.name());
+        assertEquals(0.5, input.avgProductionTime());
+        assertEquals(0.9, input.yield());
+        assertEquals(100, input.stock());
     }
 
     @Test
