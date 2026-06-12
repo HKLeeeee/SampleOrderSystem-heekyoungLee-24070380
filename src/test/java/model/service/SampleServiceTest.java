@@ -9,6 +9,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import model.repository.JsonSampleRepository;
 
@@ -86,5 +87,21 @@ class SampleServiceTest {
     @DisplayName("등록 없이 전체 조회 — 빈 리스트")
     void 등록_없음_전체조회() {
         assertTrue(service.findAll().isEmpty());
+    }
+
+    @Test
+    @DisplayName("findById — 등록된 시료 반환")
+    void findById_등록된_시료_반환() {
+        service.register(new Sample("S-001", "SiC 웨이퍼", 0.8, 0.92, 0));
+        Optional<Sample> result = service.findById("S-001");
+        assertTrue(result.isPresent());
+        assertEquals("S-001", result.get().getId());
+    }
+
+    @Test
+    @DisplayName("findById — 없는 ID는 빈 Optional")
+    void findById_없는_ID_빈_Optional() {
+        Optional<Sample> result = service.findById("S-999");
+        assertTrue(result.isEmpty());
     }
 }

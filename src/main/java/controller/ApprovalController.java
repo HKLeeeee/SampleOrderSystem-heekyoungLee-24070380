@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 public class ApprovalController {
 
     private final ApprovalService approvalService;
@@ -55,9 +56,7 @@ public class ApprovalController {
     }
 
     private void approve(Order order, Map<String, String> sampleNames) {
-        Optional<Sample> sampleOpt = sampleService.findAll().stream()
-                .filter(s -> s.getId().equals(order.getSampleId()))
-                .findFirst();
+        Optional<Sample> sampleOpt = sampleService.findById(order.getSampleId());
         if (sampleOpt.isEmpty()) {
             view.displayMessage("[오류] 시료 정보를 찾을 수 없습니다.");
             return;

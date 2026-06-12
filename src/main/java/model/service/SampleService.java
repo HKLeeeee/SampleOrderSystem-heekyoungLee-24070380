@@ -4,6 +4,7 @@ import model.entity.Sample;
 import model.repository.SampleRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SampleService {
@@ -23,6 +24,10 @@ public class SampleService {
 
     public List<Sample> findAll() {
         return repository.findAll();
+    }
+
+    public Optional<Sample> findById(String id) {
+        return repository.findById(id);
     }
 
     public List<Sample> search(String keyword) {

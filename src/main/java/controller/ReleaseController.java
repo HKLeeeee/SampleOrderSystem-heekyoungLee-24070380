@@ -40,9 +40,7 @@ public class ReleaseController {
             if (idx < 0 || idx >= confirmed.size()) return;
             Order order = confirmed.get(idx);
 
-            Optional<Sample> sampleOpt = sampleService.findAll().stream()
-                    .filter(s -> s.getId().equals(order.getSampleId()))
-                    .findFirst();
+            Optional<Sample> sampleOpt = sampleService.findById(order.getSampleId());
             if (sampleOpt.isEmpty()) {
                 view.displayMessage("[오류] 시료 정보를 찾을 수 없습니다.");
                 return;
