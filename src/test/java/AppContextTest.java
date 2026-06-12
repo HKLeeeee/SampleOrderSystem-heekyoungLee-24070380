@@ -1,3 +1,4 @@
+import controller.MainController;
 import model.entity.Order;
 import model.entity.OrderStatus;
 import model.entity.Sample;
@@ -7,7 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.ByteArrayInputStream;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,5 +77,13 @@ class AppContextTest {
         sample = ctx.getSampleService().findAll().get(0);
         ctx.getReleaseService().release(confirmed, sample);
         assertEquals(OrderStatus.RELEASE, ctx.getOrderService().findByStatus(OrderStatus.RELEASE).get(0).getStatus());
+    }
+
+    @Test
+    @DisplayName("AppContext.buildMainController — 비null 반환")
+    void buildMainController_smoke() {
+        Scanner scanner = new Scanner(new ByteArrayInputStream("0\n".getBytes()));
+        MainController ctrl = ctx.buildMainController(scanner);
+        assertNotNull(ctrl);
     }
 }

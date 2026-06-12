@@ -1,11 +1,10 @@
 package controller;
 
-import model.entity.OrderStatus;
-import model.service.*;
-import view.*;
+import view.MainMenuView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MainController {
@@ -14,42 +13,21 @@ public class MainController {
     private static final int MENU_MAX = 6;
 
     private final MainMenuView mainMenuView;
-    private final SampleController sampleController;
-    private final OrderController orderController;
-    private final ApprovalController approvalController;
-    private final MonitoringController monitoringController;
-    private final ProductionController productionController;
-    private final ReleaseController releaseController;
-    private final SampleService sampleService;
-    private final OrderService orderService;
-    private final ProductionQueue productionQueue;
+    private final Map<Integer, Runnable> handlers;
+    private final DashboardProvider dashboard;
     private final Scanner scanner;
 
     MainController(MainMenuView mainMenuView) {
-        this(mainMenuView, null, null, null, null, null, null, null, null, null, null);
+        this(mainMenuView, Map.of(), null, new Scanner(System.in));
     }
 
     public MainController(MainMenuView mainMenuView,
-                          SampleController sampleController,
-                          OrderController orderController,
-                          ApprovalController approvalController,
-                          MonitoringController monitoringController,
-                          ProductionController productionController,
-                          ReleaseController releaseController,
-                          SampleService sampleService,
-                          OrderService orderService,
-                          ProductionQueue productionQueue,
+                          Map<Integer, Runnable> handlers,
+                          DashboardProvider dashboard,
                           Scanner scanner) {
         this.mainMenuView = mainMenuView;
-        this.sampleController = sampleController;
-        this.orderController = orderController;
-        this.approvalController = approvalController;
-        this.monitoringController = monitoringController;
-        this.productionController = productionController;
-        this.releaseController = releaseController;
-        this.sampleService = sampleService;
-        this.orderService = orderService;
-        this.productionQueue = productionQueue;
+        this.handlers = handlers;
+        this.dashboard = dashboard;
         this.scanner = scanner;
     }
 
@@ -73,33 +51,25 @@ public class MainController {
                 mainMenuView.displayError("0~6 사이 번호를 입력하세요.");
                 continue;
             }
-            switch (choice) {
-                case 1 -> sampleController.run();
-                case 2 -> orderController.run();
-                case 3 -> approvalController.run();
-                case 4 -> monitoringController.run();
-                case 5 -> productionController.run();
-                case 6 -> releaseController.run();
-                case 0 -> {
-                    mainMenuView.displayMessage("시스템을 종료합니다.");
-                    return;
-                }
+            if (choice == 0) {
+                mainMenuView.displayMessage("시스템을 종료합니다.");
+                return;
             }
+            Runnable handler = handlers.get(choice);
+            if (handler != null) handler.run();
         }
     }
 
     private void printDashboard() {
-        long totalStock = sampleService.findAll().stream().mapToLong(s -> s.getStock()).sum();
-        long totalOrders = orderService.findAll().size();
-        int queueSize = productionQueue.size();
-        int sampleCount = sampleService.findAll().size();
+        if (dashboard == null) return;
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
         System.out.println("\n========================================");
         System.out.println("  S-Semi 시료 생산주문관리 시스템");
         System.out.println("========================================");
-        System.out.printf("  등록 시료: %d종  |  총 재고: %dea%n", sampleCount, totalStock);
-        System.out.printf("  전체 주문: %d건  |  생산라인 대기: %d건%n", totalOrders, queueSize);
+        System.out.printf("  등록 시료: %d종  |  총 재고: %dea%n",
+                dashboard.getSampleCount(), dashboard.getTotalStock());
+        System.out.printf("  전체 주문: %d건  |  생산라인 대기: %d건%n",
+                dashboard.getTotalOrderCount(), dashboard.getProductionQueueSize());
         System.out.println("  현재 일시: " + now);
         System.out.println("========================================");
     }
